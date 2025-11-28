@@ -1,74 +1,66 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useTheme } from '@/context/ThemeContext';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const { colors } = useTheme();
+  const form = useRef<HTMLFormElement>(null);
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
 
-  // États : idle, loading, success, error
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  // INFOS DU CLIENT
+  // INFOS D'AFFICHAGE (Visuel seulement)
   const contactInfo = {
-    email: 'woodshleico@gmail.com', // L'email qui recevra les messages
+    email: 'woodshleico@gmail.com',
     phone: '+509 39 20 1945',
     instagram: 'gregwadizay',
     instagramUrl: 'https://www.instagram.com/gregwadizay/',
     location: 'Haïti',
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.email || !formData.message) return;
 
     setStatus('loading');
 
-    try {
-      // Envoi via FormSubmit (Gratuit, pas de compte requis pour le dev)
-      const response = await fetch(`https://formsubmit.co/ajax/${contactInfo.email}`, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          _subject: `Nouveau message de ${formData.name} (Portfolio)`, // Sujet de l'email
-          _template: "table", // Format propre
-          _captcha: "false" // Désactive le captcha visuel
-        })
-      });
+    // ============================================================
+    // CLÉS DU CLIENT
+    // ============================================================
+    const SERVICE_ID = 'service_3m0ro9p';
+    const TEMPLATE_ID = 'template_qhyn5o9';
+    const PUBLIC_KEY = 'ciReId4kKMC8uE_x-';
 
-      if (response.ok) {
+    const templateParams = {
+      from_name: formData.name,   // Correspond à {{from_name}} dans le template
+      from_email: formData.email, // Correspond à {{from_email}} dans le template
+      message: formData.message,  // Correspond à {{message}} dans le template
+    };
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+      .then((result) => {
+        console.log(result.text);
         setStatus('success');
         setFormData({ name: '', email: '', message: '' });
-        // Remet le bouton à l'état initial après 5 secondes
         setTimeout(() => setStatus('idle'), 5000);
-      } else {
+      }, (error) => {
+        console.error(error.text);
         setStatus('error');
         setTimeout(() => setStatus('idle'), 5000);
-      }
-    } catch (error) {
-      console.error("Erreur d'envoi:", error);
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
-    }
+      });
   };
 
   const inputClasses =
@@ -220,14 +212,14 @@ const Contact = () => {
             viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Nom */}
+            <form ref={form} onSubmit={handleSubmit} className="space-y-5">
+              {/* Name */}
               <div>
                 <label htmlFor="name" className="block text-sm mb-2" style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}>Nom complet</label>
                 <input
                   type="text"
                   id="name"
-                  name="name"
+                  name="from_name" // IMPORTANT pour le template EmailJS
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -243,7 +235,7 @@ const Contact = () => {
                 <input
                   type="email"
                   id="email"
-                  name="email"
+                  name="from_email" // IMPORTANT pour le template EmailJS
                   value={formData.email}
                   onChange={handleChange}
                   required
