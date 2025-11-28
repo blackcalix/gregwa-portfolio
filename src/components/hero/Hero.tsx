@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useMotionValue, useSpring, useTransform, useScroll, useAnimationControls } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, useScroll, useAnimationControls, Variants } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { useRef, useEffect, useState } from 'react';
 import ToolsSection from './ToolsSection';
@@ -56,8 +56,8 @@ const Hero = () => {
   const titleLetters = 'Gregwa'.split('');
   const isDark = theme === 'dark';
 
-  // Variants
-  const containerVariants = {
+  // Variants TYPÉS CORRECTEMENT
+  const containerVariants: Variants = {
     hidden: {},
     visible: {
       transition: {
@@ -67,7 +67,7 @@ const Hero = () => {
     },
   };
 
-  const letterVariants = {
+  const letterVariants: Variants = {
     hidden: {
       opacity: 0,
       y: 150,
@@ -156,7 +156,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* Titre GREGWA - EFFET SIMPLIFIÉ */}
+        {/* Titre GREGWA */}
         <motion.div
           className="overflow-visible mb-6"
           style={{ y: titleY, perspective: '1500px' }}
