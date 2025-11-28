@@ -20,10 +20,9 @@ const About = () => {
     offset: ['start end', 'end start'],
   });
 
-  // Parallax réduit sur mobile pour éviter les bugs
   const leftX = useTransform(scrollYProgress, [0, 0.5], [-50, 0]);
   const rightX = useTransform(scrollYProgress, [0, 0.5], [50, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]); // Apparaît plus vite
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   return (
     <section
@@ -33,16 +32,26 @@ const About = () => {
       style={{ backgroundColor: `${colors.bgAlt}30` }}
       aria-labelledby="about-title"
     >
+      {/* Élément décoratif */}
+      <motion.div
+        className="absolute top-20 right-20 w-64 h-64 rounded-full opacity-20 blur-3xl"
+        style={{ backgroundColor: colors.primary }}
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.1, 0.2, 0.1],
+        }}
+        transition={{ duration: 8, repeat: Infinity }}
+      />
+
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Colonne gauche */}
           <motion.div style={{ x: leftX, opacity }}>
-            {/* Badge */}
             <motion.div
               className="inline-flex items-center gap-3 mb-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }} // Trigger plus tôt
+              viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
               <motion.span
@@ -59,7 +68,6 @@ const About = () => {
               </span>
             </motion.div>
 
-            {/* Titre */}
             <div className="mb-6">
               <motion.h2
                 id="about-title"
@@ -67,7 +75,7 @@ const About = () => {
                 style={{ color: colors.text, fontFamily: 'var(--font-heading)' }}
                 initial={{ y: 50, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, margin: '-50px' }} // Trigger plus tôt
+                viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: 'easeOut' }}
               >
                 Créer des visuels qui
@@ -75,14 +83,13 @@ const About = () => {
               </motion.h2>
             </div>
 
-            {/* Texte */}
             <motion.div
               className="space-y-4 text-base md:text-lg leading-relaxed mb-8"
               style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: 0.1 }} // Délai réduit
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
               <p>
                 Je suis <span style={{ color: colors.text, fontWeight: 600 }}>Gregwa</span>, graphic designer
@@ -96,14 +103,13 @@ const About = () => {
               </p>
             </motion.div>
 
-            {/* Outils */}
             <motion.div
               className="pt-6"
               style={{ borderTop: `1px solid ${colors.border}` }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: 0.2 }} // Délai réduit
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
             >
               <p
                 className="text-xs md:text-sm uppercase tracking-[0.2em] mb-4"
@@ -124,8 +130,8 @@ const About = () => {
                     }}
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, margin: '-50px' }}
-                    transition={{ delay: 0.3 + i * 0.05 }} // Délai réduit
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 + i * 0.05 }}
                     whileHover={{
                       backgroundColor: colors.primary,
                       borderColor: colors.primary,
@@ -139,17 +145,17 @@ const About = () => {
             </motion.div>
           </motion.div>
 
-          {/* Colonne droite */}
-          <motion.div style={{ x: rightX, opacity }}>
-            {/* Compétences */}
+          {/* Colonne droite - CORRECTION BARRES */}
+          <motion.div style={{ x: rightX, opacity }} className="w-full">
             <div className="space-y-6 mb-8">
               {skills.map((skill, index) => (
                 <motion.div
                   key={skill.name}
                   initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: '-50px' }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }} // Délai réduit
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="w-full"
                 >
                   <div className="flex justify-between mb-2">
                     <span
@@ -158,41 +164,41 @@ const About = () => {
                     >
                       {skill.name}
                     </span>
-                    <motion.span
+                    <span
                       className="text-sm md:text-base font-bold"
                       style={{ color: colors.primary, fontFamily: 'var(--font-heading)' }}
                     >
                       {skill.level}%
-                    </motion.span>
+                    </span>
                   </div>
 
-                  {/* Barre de progression */}
+                  {/* Barre de progression - Parent avec w-full */}
                   <div
-                    className="h-1.5 rounded-full overflow-hidden"
+                    className="h-2 w-full rounded-full overflow-hidden"
                     style={{ backgroundColor: colors.border }}
                   >
                     <motion.div
-                      className="h-full rounded-full relative overflow-hidden"
+                      className="h-full rounded-full relative"
                       style={{ backgroundColor: colors.primary }}
                       initial={{ width: 0 }}
                       whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: true, margin: '-50px' }}
+                      viewport={{ once: true }}
                       transition={{
-                        duration: 1,
-                        delay: 0.2 + index * 0.1, // Délai réduit
-                        ease: 'easeOut',
+                        duration: 1.5,
+                        delay: 0.2,
+                        ease: "easeOut",
                       }}
                     >
+                      {/* Reflet brillant sur la barre */}
                       <motion.div
-                        className="absolute inset-0"
-                        style={{
-                          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-                        }}
-                        animate={{ x: ['-100%', '200%'] }}
+                        className="absolute top-0 bottom-0 w-20 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                        initial={{ x: -100 }}
+                        animate={{ x: 500 }}
                         transition={{
                           duration: 2,
                           repeat: Infinity,
-                          repeatDelay: 3,
+                          repeatDelay: 1,
+                          ease: "linear",
                         }}
                       />
                     </motion.div>
@@ -207,7 +213,7 @@ const About = () => {
               style={{ borderTop: `1px solid ${colors.border}` }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
+              viewport={{ once: true }}
               transition={{ delay: 0.4 }}
             >
               {[
@@ -220,7 +226,7 @@ const About = () => {
                   className="text-center"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-50px' }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.5 + i * 0.05 }}
                 >
                   <p

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react'; // <--- IMPORT AJOUTÉ
 import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import ClientLayout from './ClientLayout';
@@ -33,6 +34,9 @@ export default function RootLayout({
         <ThemeProvider>
           <ClientLayout>{children}</ClientLayout>
         </ThemeProvider>
+        
+        {/* Composant Analytics ajouté ici */}
+        <Analytics />
       </body>
     </html>
   );
