@@ -20,40 +20,30 @@ const About = () => {
     offset: ['start end', 'end start'],
   });
 
-  const leftX = useTransform(scrollYProgress, [0, 0.5], [-100, 0]);
-  const rightX = useTransform(scrollYProgress, [0, 0.5], [100, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+  // Parallax réduit sur mobile pour éviter les bugs
+  const leftX = useTransform(scrollYProgress, [0, 0.5], [-50, 0]);
+  const rightX = useTransform(scrollYProgress, [0, 0.5], [50, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]); // Apparaît plus vite
 
   return (
     <section
       ref={containerRef}
       id="about"
-      className="relative py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden"
+      className="relative py-16 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden"
       style={{ backgroundColor: `${colors.bgAlt}30` }}
       aria-labelledby="about-title"
     >
-      {/* Élément décoratif */}
-      <motion.div
-        className="absolute top-20 right-20 w-64 h-64 rounded-full opacity-20 blur-3xl"
-        style={{ backgroundColor: colors.primary }}
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.1, 0.2, 0.1],
-        }}
-        transition={{ duration: 8, repeat: Infinity }}
-      />
-
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Colonne gauche */}
           <motion.div style={{ x: leftX, opacity }}>
             {/* Badge */}
             <motion.div
-              className="inline-flex items-center gap-3 mb-6"
+              className="inline-flex items-center gap-3 mb-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              viewport={{ once: true, margin: '-50px' }} // Trigger plus tôt
+              transition={{ duration: 0.5 }}
             >
               <motion.span
                 className="w-3 h-3 rounded-full"
@@ -70,15 +60,15 @@ const About = () => {
             </motion.div>
 
             {/* Titre */}
-            <div className="overflow-hidden mb-8">
+            <div className="mb-6">
               <motion.h2
                 id="about-title"
-                className="text-4xl md:text-5xl lg:text-6xl font-bold"
+                className="text-3xl md:text-5xl lg:text-6xl font-bold"
                 style={{ color: colors.text, fontFamily: 'var(--font-heading)' }}
-                initial={{ y: 100 }}
-                whileInView={{ y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+                initial={{ y: 50, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true, margin: '-50px' }} // Trigger plus tôt
+                transition={{ duration: 0.6, ease: 'easeOut' }}
               >
                 Créer des visuels qui
                 <span style={{ color: colors.primary }}> marquent</span>
@@ -87,12 +77,12 @@ const About = () => {
 
             {/* Texte */}
             <motion.div
-              className="space-y-6 text-lg leading-relaxed mb-10"
+              className="space-y-4 text-base md:text-lg leading-relaxed mb-8"
               style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.1 }} // Délai réduit
             >
               <p>
                 Je suis <span style={{ color: colors.text, fontWeight: 600 }}>Gregwa</span>, graphic designer
@@ -108,15 +98,15 @@ const About = () => {
 
             {/* Outils */}
             <motion.div
-              className="pt-8"
+              className="pt-6"
               style={{ borderTop: `1px solid ${colors.border}` }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: 0.2 }} // Délai réduit
             >
               <p
-                className="text-sm uppercase tracking-[0.2em] mb-6"
+                className="text-xs md:text-sm uppercase tracking-[0.2em] mb-4"
                 style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
               >
                 Outils de prédilection
@@ -125,17 +115,17 @@ const About = () => {
                 {['Adobe Photoshop', 'Adobe Illustrator', 'Affinity'].map((tool, i) => (
                   <motion.span
                     key={tool}
-                    className="px-5 py-2.5 rounded-full text-sm font-medium"
+                    className="px-4 py-2 rounded-full text-xs md:text-sm font-medium"
                     style={{
                       backgroundColor: colors.card,
                       color: colors.text,
                       border: `1px solid ${colors.border}`,
                       fontFamily: 'var(--font-body)',
                     }}
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 + i * 0.1 }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    transition={{ delay: 0.3 + i * 0.05 }} // Délai réduit
                     whileHover={{
                       backgroundColor: colors.primary,
                       borderColor: colors.primary,
@@ -152,29 +142,25 @@ const About = () => {
           {/* Colonne droite */}
           <motion.div style={{ x: rightX, opacity }}>
             {/* Compétences */}
-            <div className="space-y-8 mb-12">
+            <div className="space-y-6 mb-8">
               {skills.map((skill, index) => (
                 <motion.div
                   key={skill.name}
-                  initial={{ opacity: 0, x: 50 }}
+                  initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }} // Délai réduit
                 >
-                  <div className="flex justify-between mb-3">
+                  <div className="flex justify-between mb-2">
                     <span
-                      className="text-base font-medium"
+                      className="text-sm md:text-base font-medium"
                       style={{ color: colors.text, fontFamily: 'var(--font-body)' }}
                     >
                       {skill.name}
                     </span>
                     <motion.span
-                      className="text-base font-bold"
+                      className="text-sm md:text-base font-bold"
                       style={{ color: colors.primary, fontFamily: 'var(--font-heading)' }}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.8 + index * 0.1 }}
                     >
                       {skill.level}%
                     </motion.span>
@@ -182,7 +168,7 @@ const About = () => {
 
                   {/* Barre de progression */}
                   <div
-                    className="h-2 rounded-full overflow-hidden"
+                    className="h-1.5 rounded-full overflow-hidden"
                     style={{ backgroundColor: colors.border }}
                   >
                     <motion.div
@@ -190,14 +176,13 @@ const About = () => {
                       style={{ backgroundColor: colors.primary }}
                       initial={{ width: 0 }}
                       whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: true }}
+                      viewport={{ once: true, margin: '-50px' }}
                       transition={{
-                        duration: 1.2,
-                        delay: 0.4 + index * 0.15,
-                        ease: [0.25, 0.46, 0.45, 0.94],
+                        duration: 1,
+                        delay: 0.2 + index * 0.1, // Délai réduit
+                        ease: 'easeOut',
                       }}
                     >
-                      {/* Shimmer */}
                       <motion.div
                         className="absolute inset-0"
                         style={{
@@ -208,7 +193,6 @@ const About = () => {
                           duration: 2,
                           repeat: Infinity,
                           repeatDelay: 3,
-                          delay: 1.5 + index * 0.2,
                         }}
                       />
                     </motion.div>
@@ -219,12 +203,12 @@ const About = () => {
 
             {/* Statistiques */}
             <motion.div
-              className="grid grid-cols-3 gap-6 pt-8"
+              className="grid grid-cols-3 gap-4 pt-6"
               style={{ borderTop: `1px solid ${colors.border}` }}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: 0.4 }}
             >
               {[
                 { value: '5+', label: 'Années exp.' },
@@ -234,27 +218,19 @@ const About = () => {
                 <motion.div
                   key={stat.label}
                   className="text-center"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.7 + i * 0.1 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ delay: 0.5 + i * 0.05 }}
                 >
-                  <motion.p
-                    className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2"
+                  <p
+                    className="text-2xl md:text-4xl font-bold mb-1"
                     style={{ color: colors.primary, fontFamily: 'var(--font-heading)' }}
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      delay: 0.8 + i * 0.1,
-                      type: 'spring',
-                      stiffness: 200,
-                    }}
                   >
                     {stat.value}
-                  </motion.p>
+                  </p>
                   <p
-                    className="text-sm"
+                    className="text-xs md:text-sm"
                     style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
                   >
                     {stat.label}

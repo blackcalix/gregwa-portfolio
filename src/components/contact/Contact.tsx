@@ -15,7 +15,7 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // INFOS DE CONTACT RÉELLES
+  // INFOS DE CONTACT
   const contactInfo = {
     email: 'woodshleico@gmail.com',
     phone: '+509 39 20 1945',
@@ -34,7 +34,6 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Ouvre le client mail avec les infos pré-remplies
     const subject = encodeURIComponent(`Contact depuis le Portfolio - ${formData.name}`);
     const body = encodeURIComponent(
       `Nom: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
@@ -42,7 +41,6 @@ const Contact = () => {
     
     window.location.href = `mailto:${contactInfo.email}?subject=${subject}&body=${body}`;
 
-    // Simulation de l'envoi
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     setIsSubmitting(false);
@@ -53,31 +51,31 @@ const Contact = () => {
   };
 
   const inputClasses =
-    'w-full px-5 py-4 rounded-lg border-2 outline-none transition-all duration-300 placeholder:opacity-50 focus:border-[#FF3C00]';
+    'w-full px-5 py-4 rounded-lg border-2 outline-none transition-all duration-300 placeholder:opacity-50 focus:border-[#FF3C00] text-sm md:text-base';
 
   return (
     <section
       id="contact"
-      className="py-24 md:py-32 px-6 md:px-12 lg:px-24"
+      className="py-16 md:py-32 px-6 md:px-12 lg:px-24"
       style={{ backgroundColor: 'transparent' }}
       aria-labelledby="contact-title"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
           {/* Colonne gauche */}
           <motion.div
-            initial={{ opacity: 0, x: -60 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
+            viewport={{ once: true, margin: '-50px' }} // Trigger plus tôt
+            transition={{ duration: 0.6 }}
           >
             {/* Badge */}
             <motion.div
-              className="inline-flex items-center gap-3 mb-6"
+              className="inline-flex items-center gap-3 mb-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5 }}
             >
               <motion.span
                 className="w-3 h-3 rounded-full"
@@ -94,15 +92,15 @@ const Contact = () => {
             </motion.div>
 
             {/* Titre */}
-            <div className="overflow-hidden mb-8">
+            <div className="mb-6">
               <motion.h2
                 id="contact-title"
-                className="text-4xl md:text-5xl lg:text-6xl font-bold"
+                className="text-3xl md:text-5xl lg:text-6xl font-bold"
                 style={{ color: colors.text, fontFamily: 'var(--font-heading)' }}
-                initial={{ y: 100 }}
-                whileInView={{ y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+                initial={{ y: 30, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.6 }}
               >
                 Travaillons
                 <span style={{ color: colors.primary }}> ensemble</span>
@@ -111,36 +109,35 @@ const Contact = () => {
 
             {/* Description */}
             <motion.p
-              className="text-lg leading-relaxed mb-12"
+              className="text-base md:text-lg leading-relaxed mb-10"
               style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
               Un projet en tête ? Une idée à concrétiser ?
               N&apos;hésite pas à me contacter pour en discuter.
             </motion.p>
 
             {/* Infos de contact */}
-            <div className="space-y-6">
+            <div className="space-y-5">
               {/* Email */}
               <motion.a
                 href={`mailto:${contactInfo.email}`}
-                className="flex items-center gap-4 group"
-                whileHover={{ x: 10 }}
-                initial={{ opacity: 0, y: 20 }}
+                className="flex items-center gap-4 group p-3 rounded-xl transition-colors hover:bg-white/5"
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.3 }}
               >
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-[#FF3C00]"
+                  className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-[#FF3C00]"
                   style={{ backgroundColor: colors.border }}
                 >
                   <svg
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke={colors.text}
@@ -153,13 +150,13 @@ const Contact = () => {
                 </div>
                 <div>
                   <p
-                    className="text-sm"
+                    className="text-xs uppercase tracking-wider mb-1"
                     style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
                   >
                     Email
                   </p>
                   <p
-                    className="text-lg font-medium transition-colors duration-300 group-hover:text-[#FF3C00]"
+                    className="text-base md:text-lg font-medium transition-colors duration-300 group-hover:text-[#FF3C00]"
                     style={{ color: colors.text, fontFamily: 'var(--font-body)' }}
                   >
                     {contactInfo.email}
@@ -170,20 +167,19 @@ const Contact = () => {
               {/* Téléphone */}
               <motion.a
                 href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}
-                className="flex items-center gap-4 group"
-                whileHover={{ x: 10 }}
-                initial={{ opacity: 0, y: 20 }}
+                className="flex items-center gap-4 group p-3 rounded-xl transition-colors hover:bg-white/5"
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.3, delay: 0.1 }}
               >
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-[#FF3C00]"
+                  className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-[#FF3C00]"
                   style={{ backgroundColor: colors.border }}
                 >
                   <svg
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke={colors.text}
@@ -195,13 +191,13 @@ const Contact = () => {
                 </div>
                 <div>
                   <p
-                    className="text-sm"
+                    className="text-xs uppercase tracking-wider mb-1"
                     style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
                   >
                     Téléphone
                   </p>
                   <p
-                    className="text-lg font-medium transition-colors duration-300 group-hover:text-[#FF3C00]"
+                    className="text-base md:text-lg font-medium transition-colors duration-300 group-hover:text-[#FF3C00]"
                     style={{ color: colors.text, fontFamily: 'var(--font-body)' }}
                   >
                     {contactInfo.phone}
@@ -214,20 +210,19 @@ const Contact = () => {
                 href={contactInfo.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 group"
-                whileHover={{ x: 10 }}
-                initial={{ opacity: 0, y: 20 }}
+                className="flex items-center gap-4 group p-3 rounded-xl transition-colors hover:bg-white/5"
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.3, delay: 0.2 }}
               >
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-purple-500 group-hover:via-pink-500 group-hover:to-orange-500"
+                  className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-purple-500 group-hover:via-pink-500 group-hover:to-orange-500"
                   style={{ backgroundColor: colors.border }}
                 >
                   <svg
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill={colors.text}
                     className="group-hover:fill-white transition-colors duration-300"
@@ -237,13 +232,13 @@ const Contact = () => {
                 </div>
                 <div>
                   <p
-                    className="text-sm"
+                    className="text-xs uppercase tracking-wider mb-1"
                     style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
                   >
                     Instagram
                   </p>
                   <p
-                    className="text-lg font-medium transition-colors duration-300 group-hover:text-[#FF3C00]"
+                    className="text-base md:text-lg font-medium transition-colors duration-300 group-hover:text-[#FF3C00]"
                     style={{ color: colors.text, fontFamily: 'var(--font-body)' }}
                   >
                     @{contactInfo.instagram}
@@ -253,19 +248,19 @@ const Contact = () => {
 
               {/* Localisation */}
               <motion.div
-                className="flex items-center gap-4"
-                initial={{ opacity: 0, y: 20 }}
+                className="flex items-center gap-4 p-3"
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: '-50px' }}
                 transition={{ delay: 0.3 }}
               >
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center"
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: colors.border }}
                 >
                   <svg
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke={colors.text}
@@ -277,13 +272,13 @@ const Contact = () => {
                 </div>
                 <div>
                   <p
-                    className="text-sm"
+                    className="text-xs uppercase tracking-wider mb-1"
                     style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
                   >
                     Localisation
                   </p>
                   <p
-                    className="text-lg font-medium"
+                    className="text-base md:text-lg font-medium"
                     style={{ color: colors.text, fontFamily: 'var(--font-body)' }}
                   >
                     {contactInfo.location}
@@ -295,12 +290,12 @@ const Contact = () => {
 
           {/* Colonne droite - Formulaire */}
           <motion.div
-            initial={{ opacity: 0, x: 60 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Nom */}
               <div>
                 <label
@@ -370,7 +365,7 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  rows={6}
+                  rows={5}
                   placeholder="Décris ton projet..."
                   className={`${inputClasses} resize-none`}
                   style={{
@@ -416,7 +411,7 @@ const Contact = () => {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                       />
                     </svg>
-                    Envoi en cours...
+                    Ouverture email...
                   </span>
                 ) : isSubmitted ? (
                   <span className="flex items-center justify-center gap-2">
@@ -430,12 +425,20 @@ const Contact = () => {
                     >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
-                    Message envoyé !
+                    Email ouvert !
                   </span>
                 ) : (
                   'Envoyer le message'
                 )}
               </motion.button>
+
+              {/* Note sous le bouton */}
+              <p
+                className="text-xs md:text-sm text-center mt-4"
+                style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
+              >
+                Clique pour ouvrir ton application email avec le message pré-rempli.
+              </p>
             </form>
           </motion.div>
         </div>
