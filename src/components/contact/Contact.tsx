@@ -129,10 +129,10 @@ const Contact = () => {
                 href={`mailto:${contactInfo.email}`}
                 className="flex items-center gap-4 group"
                 whileHover={{ x: 10 }}
-                transition={{ duration: 0.3 }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                transition={{ duration: 0.3 }}
               >
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-[#FF3C00]"
@@ -172,11 +172,10 @@ const Contact = () => {
                 href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}
                 className="flex items-center gap-4 group"
                 whileHover={{ x: 10 }}
-                transition={{ duration: 0.3 }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
               >
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-[#FF3C00]"
@@ -217,11 +216,10 @@ const Contact = () => {
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 group"
                 whileHover={{ x: 10 }}
-                transition={{ duration: 0.3 }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
               >
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-purple-500 group-hover:via-pink-500 group-hover:to-orange-500"
@@ -418,7 +416,7 @@ const Contact = () => {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                       />
                     </svg>
-                    Ouverture email...
+                    Envoi en cours...
                   </span>
                 ) : isSubmitted ? (
                   <span className="flex items-center justify-center gap-2">
@@ -432,20 +430,12 @@ const Contact = () => {
                     >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
-                    Email ouvert !
+                    Message envoyé !
                   </span>
                 ) : (
                   'Envoyer le message'
                 )}
               </motion.button>
-
-              {/* Note sous le bouton */}
-              <p
-                className="text-sm text-center mt-4"
-                style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}
-              >
-                Clique pour ouvrir ton application email avec le message pré-rempli.
-              </p>
             </form>
           </motion.div>
         </div>
