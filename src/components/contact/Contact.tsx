@@ -6,7 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import emailjs from '@emailjs/browser';
 
 const Contact = () => {
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
   const form = useRef<HTMLFormElement>(null);
   
   const [formData, setFormData] = useState({
@@ -17,7 +17,6 @@ const Contact = () => {
 
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  // INFOS D'AFFICHAGE (Visuel seulement)
   const contactInfo = {
     email: 'woodshleico@gmail.com',
     phone: '+509 39 20 1945',
@@ -37,17 +36,14 @@ const Contact = () => {
 
     setStatus('loading');
 
-    // ============================================================
-    // CLÉS DU CLIENT
-    // ============================================================
     const SERVICE_ID = 'service_3m0ro9p';
     const TEMPLATE_ID = 'template_qhyn5o9';
     const PUBLIC_KEY = 'ciReId4kKMC8uE_x-';
 
     const templateParams = {
-      from_name: formData.name,   // Correspond à {{from_name}} dans le template
-      from_email: formData.email, // Correspond à {{from_email}} dans le template
-      message: formData.message,  // Correspond à {{message}} dans le template
+      from_name: formData.name,
+      from_email: formData.email,
+      message: formData.message,
     };
 
     emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
@@ -63,8 +59,20 @@ const Contact = () => {
       });
   };
 
-  const inputClasses =
-    'w-full px-5 py-4 rounded-lg border-2 outline-none transition-all duration-300 placeholder:opacity-50 focus:border-[#FF3C00] text-sm md:text-base';
+  // Styles dynamiques selon le thème pour input
+  const isDark = theme === 'dark';
+  const inputBg = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
+  const inputText = isDark ? '#ffffff' : '#000000';
+  const inputPlaceholder = isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)';
+
+  const inputStyle = {
+    backgroundColor: inputBg,
+    borderColor: colors.border,
+    color: inputText,
+    fontFamily: 'var(--font-body)',
+  };
+
+  const inputClassName = `w-full px-5 py-4 rounded-lg border outline-none transition-all duration-300 focus:border-[#FF3C00] text-base`;
 
   return (
     <section
@@ -75,7 +83,7 @@ const Contact = () => {
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
-          {/* Colonne gauche (Infos) */}
+          {/* Colonne gauche (Infos) - inchangée */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -205,7 +213,7 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          {/* Colonne droite - Formulaire */}
+          {/* Colonne droite - Formulaire avec STYLE CORRIGÉ */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -213,19 +221,19 @@ const Contact = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <form ref={form} onSubmit={handleSubmit} className="space-y-5">
-              {/* Name */}
+              {/* Nom */}
               <div>
                 <label htmlFor="name" className="block text-sm mb-2" style={{ color: colors.textMuted, fontFamily: 'var(--font-body)' }}>Nom complet</label>
                 <input
                   type="text"
                   id="name"
-                  name="from_name" // IMPORTANT pour le template EmailJS
+                  name="from_name"
                   value={formData.name}
                   onChange={handleChange}
                   required
                   placeholder="John Doe"
-                  className={inputClasses}
-                  style={{ backgroundColor: colors.card, borderColor: colors.border, color: colors.text, fontFamily: 'var(--font-body)' }}
+                  className={inputClassName}
+                  style={inputStyle} // Style forcé pour la couleur
                 />
               </div>
 
@@ -235,13 +243,13 @@ const Contact = () => {
                 <input
                   type="email"
                   id="email"
-                  name="from_email" // IMPORTANT pour le template EmailJS
+                  name="from_email"
                   value={formData.email}
                   onChange={handleChange}
                   required
                   placeholder="john@example.com"
-                  className={inputClasses}
-                  style={{ backgroundColor: colors.card, borderColor: colors.border, color: colors.text, fontFamily: 'var(--font-body)' }}
+                  className={inputClassName}
+                  style={inputStyle}
                 />
               </div>
 
@@ -256,8 +264,8 @@ const Contact = () => {
                   required
                   rows={5}
                   placeholder="Décris ton projet..."
-                  className={`${inputClasses} resize-none`}
-                  style={{ backgroundColor: colors.card, borderColor: colors.border, color: colors.text, fontFamily: 'var(--font-body)' }}
+                  className={`${inputClassName} resize-none`}
+                  style={inputStyle}
                 />
               </div>
 
